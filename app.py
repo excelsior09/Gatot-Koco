@@ -84,4 +84,4 @@ def index():
     return render_template('index.html', query='', top_docs_3=[], top_docs_5=[], top_docs_10=[], document_titles=document_titles)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0')

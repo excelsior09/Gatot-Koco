@@ -7,11 +7,6 @@ h1 {
     color: #333;
 }
 
-.highlight {
-    background-color: yellow;
-    font-weight: bold;
-}
-
 .form-inline input[type="text"] {
     width: 60%;
 }
@@ -45,6 +40,11 @@ h1 {
 
 .card-text {
     color: #555;
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
 }
 
 @media (min-width: 576px) {
