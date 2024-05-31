@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatot Koco</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Sebut saja Gatot Koco</h1>
+        <form method="POST" class="form-inline justify-content-center mb-4">
+            <input type="text" name="query" class="form-control mr-2" placeholder="Enter your query here" required>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        {% if query %}
+        <div class="results">
+            <div class="result-category mb-4">
+                <h3>Top 3 Results:</h3>
+                <div class="card-columns">
+                    {% for doc in top_docs_3 %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ document_titles[doc.index] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Score: {{ doc.score }}</h6>
+                            <p class="card-text">{{ highlight_query(doc.content, query) }}...</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="result-category mb-4">
+                <h3>Top 5 Results:</h3>
+                <div class="card-columns">
+                    {% for doc in top_docs_5 %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ document_titles[doc.index] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Score: {{ doc.score }}</h6>
+                            <p class="card-text">{{ highlight_query(doc.content, query) }}...</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="result-category mb-4">
+                <h3>Top 10 Results:</h3>
+                <div class="card-columns">
+                    {% for doc in top_docs_10 %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ document_titles[doc.index] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Score: {{ doc.score }}</h6>
+                            <p class="card-text">{{ highlight_query(doc.content, query) }}...</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+
+</html>
