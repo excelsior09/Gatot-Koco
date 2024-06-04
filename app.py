@@ -27,11 +27,9 @@ def load_documents(folder_path):
         if filename.endswith(".txt"):
             with open(os.path.join(folder_path, filename), 'r', encoding='utf-8') as file:
                 document_title = os.path.splitext(filename)[0]
-                document_content = preprocess(file.read())  # Mengambil konten dokumen
-                documents.append(document_content)
-                document_titles.append(document_title)
+                documents.append({'title': document_title, 'content': preprocess(file.read())})
+                document_titles.append(document_title)  # Add document title to the list
     return documents, document_titles
-
 
 # Load and preprocess documents along with their titles
 folder_path = 'documents'
@@ -39,7 +37,7 @@ documents, document_titles = load_documents(folder_path)
 
 # Create TF-IDF model and transform documents into vectors
 vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(documents)
+X = vectorizer.fit_transform([doc['content'] for doc in documents])
 
 # Create index and posting list
 terms = vectorizer.get_feature_names_out()
@@ -59,14 +57,15 @@ def rank_documents(query_vector, X):
 
 # Function to display top documents
 def display_top_documents(ranked_indices, similarities, top_n):
-    top_docs = [{'index': doc_index, 'score': similarities[0, doc_index], 'content': documents[doc_index][:200]}
+    top_docs = [{'index': doc_index, 'score': similarities[0, doc_index], 'content': documents[doc_index]['content'][:200]}
                 for doc_index in ranked_indices[:top_n]]
     return top_docs
 
 # Function to highlight query in text
 def highlight_query(text, query):
-    highlighted_text = text.replace(query, f'<span class="highlight">{query}</span>')
-    return Markup(highlighted_text)
+    for word in query.split():
+        text = text.replace(word, f'<span class="highlight">{word}</span>')
+    return Markup(text)
 
 # Initialize Flask app
 app = Flask(__name__)
